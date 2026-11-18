@@ -1,0 +1,487 @@
+
+/* ==========================================
+   ROBOMIND AI - 3D DRONE EXPLORER
+   Premium Ivory + Black + Electric Blue
+========================================== */
+
+.drone3d-section {
+  padding: 75px 6%;
+  background: #F4F2ED;
+  color: #171717;
+  font-family: "Manrope", sans-serif;
+}
+
+.drone3d-container {
+  max-width: 1450px;
+  margin: auto;
+}
+
+/* ==========================================
+   SECTION HEADING
+========================================== */
+
+.drone3d-heading {
+  margin-bottom: 35px;
+}
+
+.drone3d-eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #304FFE;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.drone3d-heading h2 {
+  margin: 0 0 12px;
+  color: #171717;
+  font-size: clamp(30px, 4vw, 42px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+}
+
+.drone3d-heading p {
+  max-width: 650px;
+  margin: 0;
+  color: #777672;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* ==========================================
+   MAIN WORKSPACE
+========================================== */
+
+.drone3d-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(290px, 0.8fr);
+  gap: 22px;
+  align-items: stretch;
+}
+
+.drone3d-viewer-card,
+.drone3d-details-card {
+  min-width: 0;
+  overflow: hidden;
+  background: #FFFFFF;
+  border: 1px solid #DEDBD4;
+  border-radius: 6px;
+  box-shadow: 0 8px 25px rgba(23, 23, 23, 0.035);
+}
+
+/* ==========================================
+   3D VIEWER
+========================================== */
+
+.drone3d-viewer-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.drone3d-viewer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 23px;
+  border-bottom: 1px solid #DEDBD4;
+}
+
+.drone3d-viewer-top > div {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #304FFE;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.drone3d-status-dot {
+  width: 8px;
+  height: 8px;
+  background: #304FFE;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(48, 79, 254, 0.12);
+}
+
+.drone3d-model-label {
+  color: #777672;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.drone3d-canvas {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      #FFFFFF 0%,
+      #F4F2ED 78%
+    );
+}
+
+.drone3d-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  cursor: grab;
+}
+
+.drone3d-canvas canvas:active {
+  cursor: grabbing;
+}
+
+.drone3d-loading,
+.drone3d-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #304FFE;
+  font-size: 14px;
+  text-align: center;
+}
+
+.drone3d-error {
+  padding: 25px;
+}
+
+.drone3d-error h3 {
+  margin: 0;
+  color: #171717;
+}
+
+.drone3d-error p {
+  color: #777672;
+}
+
+/* ==========================================
+   VIEWER CONTROLS
+========================================== */
+
+.drone3d-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 17px 20px 10px;
+}
+
+.drone3d-control-btn {
+  padding: 11px 16px;
+  color: #304FFE;
+  background: #FFFFFF;
+  border: 1px solid #DEDBD4;
+  border-radius: 4px;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.drone3d-control-btn:hover {
+  color: #FFFFFF;
+  background: #304FFE;
+  border-color: #304FFE;
+  transform: translateY(-2px);
+}
+
+.drone3d-hint {
+  padding: 7px 20px 18px;
+  color: #777672;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+}
+
+/* ==========================================
+   COMPONENT INSPECTOR
+========================================== */
+
+.drone3d-details-card {
+  padding: 24px;
+}
+
+.drone3d-details-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  color: #777672;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+}
+
+.drone3d-live-badge {
+  padding: 5px 9px;
+  color: #304FFE;
+  background: #F0F2FF;
+  border: 1px solid #B9C5FF;
+  border-radius: 3px;
+  font-size: 9px;
+}
+
+.drone3d-selected-icon {
+  display: grid;
+  place-items: center;
+  width: 66px;
+  height: 66px;
+  margin: 28px 0 18px;
+  background: #F4F2ED;
+  border: 1px solid #DEDBD4;
+  border-radius: 6px;
+  color: #304FFE;
+  font-size: 30px;
+}
+
+.drone3d-details-card h3 {
+  margin: 0 0 10px;
+  color: #171717;
+  font-size: 21px;
+  font-weight: 850;
+  line-height: 1.4;
+}
+
+.drone3d-details-card > p {
+  margin: 0;
+  color: #777672;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.drone3d-info-divider {
+  height: 1px;
+  margin: 22px 0;
+  background: #DEDBD4;
+}
+
+.drone3d-info-item {
+  margin-bottom: 20px;
+}
+
+.drone3d-info-item > span {
+  display: block;
+  margin-bottom: 8px;
+  color: #304FFE;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.drone3d-info-item strong {
+  color: #171717;
+  font-size: 13px;
+}
+
+.drone3d-info-item p {
+  margin: 0;
+  color: #777672;
+  font-size: 12px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.drone3d-search-btn {
+  width: 100%;
+  margin-top: 5px;
+  padding: 14px 15px;
+  color: #FFFFFF;
+  background: #304FFE;
+  border: 1px solid #304FFE;
+  border-radius: 4px;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.drone3d-search-btn:hover:not(:disabled) {
+  background: #203BD2;
+  border-color: #203BD2;
+  transform: translateY(-2px);
+}
+
+.drone3d-search-btn:disabled {
+  color: #999894;
+  background: #E8E6E0;
+  border-color: #E8E6E0;
+  cursor: not-allowed;
+}
+
+/* ==========================================
+   COMPONENT SELECTION LIST
+========================================== */
+
+.drone3d-bottom {
+  margin-top: 28px;
+  padding: 25px;
+  background: #FFFFFF;
+  border: 1px solid #DEDBD4;
+  border-radius: 6px;
+}
+
+.drone3d-bottom h3 {
+  margin: 0 0 7px;
+  color: #171717;
+  font-size: 19px;
+  font-weight: 850;
+}
+
+.drone3d-bottom > div:first-child p {
+  margin: 0;
+  color: #777672;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.drone3d-component-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 11px;
+  margin-top: 22px;
+}
+
+.drone3d-component-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 13px;
+  color: #454440;
+  background: #FAF9F6;
+  border: 1px solid #DEDBD4;
+  border-radius: 4px;
+  font-family: "Manrope", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.drone3d-component-btn span:first-child {
+  flex-shrink: 0;
+  font-size: 18px;
+}
+
+.drone3d-component-btn span:last-child {
+  overflow-wrap: anywhere;
+}
+
+.drone3d-component-btn:hover,
+.drone3d-component-btn.active {
+  color: #304FFE;
+  background: #F0F2FF;
+  border-color: #304FFE;
+}
+
+/* ==========================================
+   NAVIGATION
+========================================== */
+
+.nav-link[href="#3d-drone-explorer"] {
+  color: #304FFE;
+  font-weight: 800;
+}
+
+/* ==========================================
+   RESPONSIVE LAYOUT
+========================================== */
+
+@media (max-width: 1000px) {
+  .drone3d-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .drone3d-details-card {
+    padding: 22px;
+  }
+
+  .drone3d-component-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .drone3d-section {
+    padding: 50px 5%;
+  }
+
+  .drone3d-viewer-top {
+    padding: 16px;
+  }
+
+  .drone3d-canvas {
+    height: 340px;
+  }
+
+  .drone3d-controls {
+    padding: 13px 14px 8px;
+  }
+
+  .drone3d-control-btn {
+    flex: 1;
+    padding: 11px 9px;
+    font-size: 11px;
+  }
+
+  .drone3d-hint {
+    padding: 7px 14px 15px;
+    font-size: 10px;
+  }
+
+  .drone3d-component-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .drone3d-bottom {
+    padding: 18px;
+  }
+
+  .drone3d-details-card {
+    padding: 19px;
+  }
+}
+
+@media (max-width: 380px) {
+  .drone3d-component-list {
+    grid-template-columns: 1fr;
+  }
+
+  .drone3d-model-label {
+    font-size: 8px;
+  }
+}
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .drone3d-control-btn,
+  .drone3d-search-btn,
+  .drone3d-component-btn {
+    transition: none;
+  }
+
+  .drone3d-control-btn:hover,
+  .drone3d-search-btn:hover:not(:disabled) {
+    transform: none;
+  }
+}

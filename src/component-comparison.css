@@ -1,0 +1,455 @@
+
+/* =========================================
+   ROBOMIND AI - COMPONENT COMPARISON
+   Premium Ivory + Black + Electric Blue
+========================================= */
+
+.comparison-section {
+  padding: 75px 6%;
+  background: #f4f2ed;
+  font-family: "Manrope", sans-serif;
+  color: #171717;
+}
+
+/* =========================================
+   SECTION HEADING
+========================================= */
+
+.comparison-heading {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 45px;
+}
+
+.comparison-eyebrow {
+  display: inline-block;
+  color: #304ffe;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+}
+
+.comparison-heading h2 {
+  margin: 15px 0;
+  color: #171717;
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 800;
+  letter-spacing: -1.8px;
+  line-height: 1.15;
+}
+
+.comparison-heading p {
+  max-width: 620px;
+  margin: 0 auto;
+  color: #777672;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* =========================================
+   COMPONENT SELECTORS
+========================================= */
+
+.comparison-selector {
+  max-width: 1050px;
+  margin: 0 auto 30px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+}
+
+.comparison-select-card {
+  position: relative;
+  padding: 26px;
+  background: #ffffff;
+  border: 1px solid #dedbd4;
+  border-radius: 7px;
+  box-shadow: 0 8px 25px rgba(23, 23, 23, 0.035);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.comparison-select-card:hover {
+  border-color: #b8c2ff;
+  box-shadow: 0 12px 30px rgba(48, 79, 254, 0.07);
+  transform: translateY(-3px);
+}
+
+.comparison-select-card label {
+  display: block;
+  margin-bottom: 13px;
+  color: #171717;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.comparison-select-card select {
+  width: 100%;
+  padding: 14px 15px;
+  border: 1px solid #dedbd4;
+  border-radius: 5px;
+  background: #f9f8f5;
+  color: #171717;
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.comparison-select-card select:hover {
+  border-color: #aeb8ff;
+}
+
+.comparison-select-card select:focus {
+  border-color: #304ffe;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(48, 79, 254, 0.1);
+}
+
+/* =========================================
+   VS INDICATOR
+========================================= */
+
+.comparison-vs {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  background: #171717;
+  color: #ffffff;
+  border: 3px solid #f4f2ed;
+  border-radius: 50%;
+  font-family: "DM Mono", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 5px 15px rgba(23, 23, 23, 0.12);
+}
+
+/* =========================================
+   COMPARE BUTTON
+========================================= */
+
+.compare-action {
+  display: block;
+  margin: 0 auto 45px;
+  padding: 15px 34px;
+  border: 1px solid #304ffe;
+  border-radius: 5px;
+  background: #304ffe;
+  color: #ffffff;
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  box-shadow: 0 7px 18px rgba(48, 79, 254, 0.16);
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.compare-action:hover {
+  background: #203bd2;
+  border-color: #203bd2;
+  box-shadow: 0 10px 24px rgba(48, 79, 254, 0.24);
+  transform: translateY(-3px);
+}
+
+.compare-action:active {
+  transform: translateY(-1px);
+}
+
+/* =========================================
+   COMPARISON CARDS
+========================================= */
+
+.comparison-grid {
+  max-width: 900px;
+  margin: 0 auto 35px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.comparison-card {
+  padding: 30px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #dedbd4;
+  border-radius: 7px;
+  box-shadow: 0 8px 25px rgba(23, 23, 23, 0.035);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.comparison-card:hover {
+  border-color: #b8c2ff;
+  box-shadow: 0 14px 35px rgba(48, 79, 254, 0.07);
+  transform: translateY(-4px);
+}
+
+/* =========================================
+   COMPONENT IMAGE
+========================================= */
+
+.comparison-image {
+  height: 180px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  overflow: hidden;
+  background: #f9f8f5;
+  border: 1px solid #eeece6;
+  border-radius: 5px;
+}
+
+.comparison-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.35s ease;
+}
+
+.comparison-card:hover .comparison-image img {
+  transform: scale(1.06);
+}
+
+.comparison-placeholder {
+  color: #999791;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+/* =========================================
+   COMPONENT TITLE
+========================================= */
+
+.comparison-card h3 {
+  margin: 12px 0;
+  color: #171717;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* =========================================
+   CATEGORY TAG
+========================================= */
+
+.comparison-tag {
+  display: inline-block;
+  padding: 7px 13px;
+  border: 1px solid #dce2ff;
+  border-radius: 4px;
+  background: #eef0ff;
+  color: #304ffe;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+/* =========================================
+   COMPARISON TABLE
+========================================= */
+
+.comparison-table-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #ffffff;
+  border: 1px solid #dedbd4;
+  border-radius: 7px;
+  box-shadow: 0 8px 25px rgba(23, 23, 23, 0.035);
+  overflow-x: auto;
+}
+
+.comparison-table-wrapper h3 {
+  margin: 0 0 25px;
+  color: #171717;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.comparison-table {
+  width: 100%;
+  min-width: 550px;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 17px 18px;
+  border-bottom: 1px solid #eeece6;
+  text-align: left;
+  vertical-align: top;
+  color: #777672;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.comparison-table thead th {
+  background: #f4f2ed;
+  color: #304ffe;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.comparison-table thead th:first-child {
+  color: #171717;
+}
+
+.comparison-table tbody th {
+  width: 18%;
+  background: #faf9f6;
+  color: #171717;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.comparison-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.comparison-table tbody tr:hover {
+  background: #f9faff;
+}
+
+.comparison-table tbody tr:last-child th,
+.comparison-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* =========================================
+   STATUS / MESSAGE
+========================================= */
+
+.comparison-message {
+  max-width: 650px;
+  margin: 25px auto;
+  padding: 20px 24px;
+  background: #ffffff;
+  border: 1px solid #dedbd4;
+  border-left: 4px solid #304ffe;
+  border-radius: 5px;
+  color: #55534f;
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(23, 23, 23, 0.03);
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 850px) {
+  .comparison-section {
+    padding: 60px 5%;
+  }
+
+  .comparison-selector {
+    gap: 15px;
+  }
+
+  .comparison-select-card {
+    padding: 20px;
+  }
+
+  .comparison-table-wrapper {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 650px) {
+  .comparison-section {
+    padding: 45px 5%;
+  }
+
+  .comparison-heading {
+    margin-bottom: 30px;
+  }
+
+  .comparison-heading h2 {
+    letter-spacing: -1px;
+  }
+
+  .comparison-selector {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .comparison-vs {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto;
+  }
+
+  .compare-action {
+    margin-bottom: 30px;
+  }
+
+  .comparison-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .comparison-card {
+    padding: 20px;
+  }
+
+  .comparison-image {
+    height: 150px;
+  }
+
+  .comparison-table-wrapper {
+    padding: 16px;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 13px;
+    font-size: 12px;
+  }
+
+  .comparison-message {
+    padding: 16px;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .comparison-select-card,
+  .comparison-card,
+  .comparison-image img,
+  .compare-action {
+    transition: none;
+  }
+}

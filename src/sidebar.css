@@ -1,0 +1,416 @@
+
+/* =========================================
+   ROBOMIND AI — SIDEBAR V2
+   Premium Minimal Design
+   Ivory + White + Electric Blue
+========================================= */
+
+:root {
+  --sidebar-width: 270px;
+  --sidebar-mini-width: 82px;
+
+  --sidebar-bg: #ffffff;
+  --sidebar-text: #777672;
+  --sidebar-dark: #171717;
+  --sidebar-blue: #304ffe;
+  --sidebar-blue-light: #f0f2ff;
+  --sidebar-border: #e9e7e2;
+
+  --sidebar-transition: 0.28s ease;
+}
+
+/* MAIN SIDEBAR */
+
+.header.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+
+  width: var(--sidebar-width);
+  height: 100vh;
+  padding: 22px 16px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+
+  box-shadow: 8px 0 30px rgba(0, 0, 0, 0.025);
+
+  transition:
+    width var(--sidebar-transition),
+    padding var(--sidebar-transition);
+}
+
+/* =========================================
+   BRAND HEADER
+========================================= */
+
+.sidebar-top {
+  width: 100%;
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  padding: 0 4px 18px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.sidebar-top .logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: var(--sidebar-dark);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.9px;
+  white-space: nowrap;
+}
+
+/* THREE DOT BUTTON */
+
+.sidebar-toggle {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 3px;
+
+  background: #f7f6f3;
+  border: 1px solid #e5e2dc;
+  border-radius: 11px;
+
+  cursor: pointer;
+  transition: var(--sidebar-transition);
+}
+
+.sidebar-toggle span {
+  width: 4px;
+  height: 4px;
+  background: #171717;
+  border-radius: 50%;
+}
+
+.sidebar-toggle:hover {
+  background: var(--sidebar-blue);
+  border-color: var(--sidebar-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 7px 17px rgba(48, 79, 254, 0.2);
+}
+
+.sidebar-toggle:hover span {
+  background: #ffffff;
+}
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.header.sidebar nav {
+  width: 100%;
+  flex: 0 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  gap: 7px;
+  margin-top: 26px;
+  padding: 0;
+}
+
+/* NAVIGATION LINKS */
+
+.header.sidebar nav a {
+  position: relative;
+
+  width: 100%;
+  min-height: 48px;
+  padding: 0 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 13px;
+
+  color: var(--sidebar-text);
+  background: transparent;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+  white-space: nowrap;
+
+  border-radius: 10px;
+
+  transition:
+    background var(--sidebar-transition),
+    color var(--sidebar-transition),
+    transform var(--sidebar-transition),
+    box-shadow var(--sidebar-transition);
+}
+
+/* ICON AREA */
+
+.header.sidebar nav a::before {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* ICONS — NAVIGATION ORDER */
+
+.header.sidebar nav a:nth-child(1)::before {
+  content: "⌂";
+}
+
+.header.sidebar nav a:nth-child(2)::before {
+  content: "▦";
+}
+
+.header.sidebar nav a:nth-child(3)::before {
+  content: "◇";
+}
+
+.header.sidebar nav a:nth-child(4)::before {
+  content: "⌕";
+}
+
+.header.sidebar nav a:nth-child(5)::before {
+  content: "⇄";
+}
+
+.header.sidebar nav a:nth-child(6)::before {
+  content: "⬡";
+}
+
+.header.sidebar nav a:nth-child(7)::before {
+  content: "▱";
+}
+
+.header.sidebar nav a:nth-child(8)::before {
+  content: "◈";
+}
+
+/* LINK LABEL */
+
+.header.sidebar nav a span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* HOVER EFFECT */
+
+.header.sidebar nav a:hover {
+  color: var(--sidebar-blue);
+  background: var(--sidebar-blue-light);
+  transform: translateX(3px);
+}
+
+/* ACTIVE LINK */
+
+.header.sidebar nav a.active,
+.header.sidebar nav a[aria-current="page"] {
+  color: #ffffff;
+  background: var(--sidebar-blue);
+
+  box-shadow: 0 8px 20px rgba(48, 79, 254, 0.18);
+}
+
+.header.sidebar nav a.active::before,
+.header.sidebar nav a[aria-current="page"]::before {
+  color: #ffffff;
+}
+
+/* =========================================
+   BOTTOM PROMOTIONAL SECTION
+========================================= */
+
+.header.sidebar::after {
+  content: "✦  BUILD SMARTER\A    Explore. Learn. Innovate.";
+
+  white-space: pre;
+  line-height: 2;
+
+  display: block;
+  margin-top: auto;
+  padding: 16px 12px;
+
+  color: var(--sidebar-blue);
+  background: #f5f6ff;
+
+  border: 1px solid #e6e9ff;
+  border-radius: 12px;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+/* =========================================
+   PAGE CONTENT
+========================================= */
+
+#app > main,
+#app > #dashboard {
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+
+  transition:
+    margin-left var(--sidebar-transition),
+    width var(--sidebar-transition);
+}
+
+/* =========================================
+   COLLAPSED SIDEBAR
+========================================= */
+
+body.sidebar-collapsed .header.sidebar {
+  width: var(--sidebar-mini-width);
+  padding: 22px 11px;
+}
+
+body.sidebar-collapsed .sidebar-top {
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+
+body.sidebar-collapsed .sidebar-top .logo {
+  justify-content: center;
+  font-size: 0;
+}
+
+body.sidebar-collapsed .sidebar-top .logo > * {
+  font-size: initial;
+}
+
+body.sidebar-collapsed .sidebar-toggle {
+  width: 42px;
+  height: 42px;
+}
+
+body.sidebar-collapsed .header.sidebar nav a {
+  justify-content: center;
+  padding: 0;
+  gap: 0;
+}
+
+body.sidebar-collapsed .header.sidebar nav a span {
+  display: none;
+}
+
+body.sidebar-collapsed .header.sidebar::after {
+  content: "✦";
+  text-align: center;
+  padding: 12px 0;
+}
+
+body.sidebar-collapsed #app > main,
+body.sidebar-collapsed #app > #dashboard {
+  margin-left: var(--sidebar-mini-width);
+  width: calc(100% - var(--sidebar-mini-width));
+}
+
+/* TOOLTIP */
+
+body.sidebar-collapsed .header.sidebar nav a:hover::after {
+  content: attr(data-label);
+
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+
+  padding: 9px 13px;
+
+  color: #ffffff;
+  background: #171717;
+
+  border-radius: 7px;
+
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 760px) {
+  .header.sidebar {
+    width: 76px;
+    padding: 18px 9px;
+  }
+
+  .sidebar-top {
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .sidebar-top .logo {
+    justify-content: center;
+    font-size: 0;
+  }
+
+  .header.sidebar nav a {
+    justify-content: center;
+    padding: 0;
+    gap: 0;
+  }
+
+  .header.sidebar nav a span {
+    display: none;
+  }
+
+  .header.sidebar::after {
+    content: "✦";
+    text-align: center;
+    padding: 12px 0;
+  }
+
+  #app > main,
+  #app > #dashboard {
+    margin-left: 76px;
+    width: calc(100% - 76px);
+  }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+  .header.sidebar,
+  .header.sidebar *,
+  #app > main,
+  #app > #dashboard {
+    transition: none !important;
+  }
+}

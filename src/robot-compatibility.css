@@ -1,0 +1,595 @@
+
+/* ==========================================
+   ROBOMIND AI - ROBOT COMPATIBILITY CHECKER
+   Premium Ivory + Black + Electric Blue
+========================================== */
+
+.compatibility-section {
+  padding: 80px 6%;
+  background: #f4f2ed;
+  font-family: "Manrope", sans-serif;
+  color: #171717;
+}
+
+.compatibility-container {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   SECTION HEADING
+========================================== */
+
+.compatibility-heading {
+  max-width: 700px;
+  margin: 0 auto 45px;
+  text-align: center;
+}
+
+.compatibility-label {
+  display: inline-block;
+  margin-bottom: 15px;
+  padding: 7px 13px;
+  border: 1px solid #dce2ff;
+  border-radius: 4px;
+  background: #eef0ff;
+  color: #304ffe;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+.compatibility-heading h2 {
+  margin: 0 0 16px;
+  color: #171717;
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 800;
+  letter-spacing: -1.7px;
+  line-height: 1.15;
+}
+
+.compatibility-heading p {
+  margin: 0;
+  color: #777672;
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+/* ==========================================
+   MAIN COMPATIBILITY CARD
+========================================== */
+
+.compatibility-card {
+  padding: 36px;
+  border: 1px solid #dedbd4;
+  border-radius: 7px;
+  background: #ffffff;
+  box-shadow: 0 12px 35px rgba(23, 23, 23, 0.035);
+}
+
+/* ==========================================
+   CARD HEADING
+========================================== */
+
+.compatibility-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  margin-bottom: 32px;
+}
+
+.compatibility-icon {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid #dce2ff;
+  border-radius: 6px;
+  background: #eef0ff;
+  font-size: 25px;
+}
+
+.compatibility-card-heading h3 {
+  margin: 0 0 6px;
+  color: #171717;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+}
+
+.compatibility-card-heading p {
+  margin: 0;
+  color: #999791;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   COMPATIBILITY FORM
+========================================== */
+
+.compatibility-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  align-items: end;
+}
+
+.compatibility-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.compatibility-field label {
+  color: #171717;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.compatibility-field select {
+  width: 100%;
+  min-height: 51px;
+  padding: 0 14px;
+  border: 1px solid #dedbd4;
+  border-radius: 5px;
+  outline: none;
+  background: #f9f8f5;
+  color: #171717;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.compatibility-field select:hover {
+  border-color: #aeb8ff;
+}
+
+.compatibility-field select:focus {
+  border-color: #304ffe;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(48, 79, 254, 0.1);
+}
+
+.compatibility-field select:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ==========================================
+   CHECK BUTTON
+========================================== */
+
+.compatibility-button {
+  display: flex;
+  min-height: 52px;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid #304ffe;
+  border-radius: 5px;
+  background: #304ffe;
+  color: #ffffff;
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  box-shadow: 0 7px 18px rgba(48, 79, 254, 0.15);
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.compatibility-button:hover {
+  background: #203bd2;
+  border-color: #203bd2;
+  box-shadow: 0 10px 24px rgba(48, 79, 254, 0.23);
+  transform: translateY(-2px);
+}
+
+.compatibility-button:active {
+  transform: translateY(0);
+}
+
+.compatibility-button span {
+  font-size: 18px;
+}
+
+/* ==========================================
+   RESULT AREA
+========================================== */
+
+.compatibility-result {
+  margin-top: 32px;
+}
+
+/* Empty state */
+
+.compatibility-empty {
+  padding: 40px 22px;
+  border: 1px dashed #c9c5bc;
+  border-radius: 6px;
+  background: #f9f8f5;
+  text-align: center;
+}
+
+.compatibility-empty > span {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 32px;
+}
+
+.compatibility-empty h3 {
+  margin: 0 0 9px;
+  color: #171717;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.compatibility-empty p {
+  max-width: 470px;
+  margin: 0 auto;
+  color: #999791;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+/* Validation message */
+
+.compatibility-validation {
+  padding: 17px 20px;
+  border: 1px solid #e9d7b4;
+  border-left: 4px solid #b7791f;
+  border-radius: 5px;
+  background: #fffaf0;
+  color: #91651b;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   COMPATIBILITY STATUS
+========================================== */
+
+.compatibility-status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 21px;
+  border-radius: 6px;
+}
+
+.status-listed {
+  border: 1px solid #dce2ff;
+  border-left: 4px solid #304ffe;
+  background: #f5f6ff;
+}
+
+.status-not-listed {
+  border: 1px solid #e9d7b4;
+  border-left: 4px solid #b7791f;
+  background: #fffaf0;
+}
+
+.status-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid #dedbd4;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #304ffe;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.status-not-listed .status-icon {
+  color: #b7791f;
+}
+
+.compatibility-status h3 {
+  margin: 0 0 6px;
+  color: #171717;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.compatibility-status p {
+  margin: 0;
+  color: #777672;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   COMPATIBILITY DETAILS
+========================================== */
+
+.compatibility-details {
+  margin-top: 22px;
+  padding: 27px;
+  border: 1px solid #dedbd4;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.compatibility-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 21px;
+  border-bottom: 1px solid #eeece6;
+}
+
+.compatibility-detail-header > div > span {
+  color: #304ffe;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.compatibility-detail-header h3 {
+  margin: 9px 0 0;
+  color: #171717;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* Component category */
+
+.component-category {
+  padding: 8px 13px;
+  border: 1px solid #dce2ff;
+  border-radius: 4px;
+  background: #eef0ff;
+  color: #304ffe;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ==========================================
+   DETAIL GRID
+========================================== */
+
+.compatibility-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.compatibility-detail-item {
+  padding: 19px;
+  border: 1px solid #dedbd4;
+  border-radius: 5px;
+  background: #f9f8f5;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.compatibility-detail-item:hover {
+  border-color: #c4ccff;
+  background: #f7f8ff;
+}
+
+.compatibility-detail-item span {
+  display: block;
+  margin-bottom: 9px;
+  color: #999791;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+}
+
+.compatibility-detail-item strong {
+  color: #171717;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   DESCRIPTION
+========================================== */
+
+.compatibility-description {
+  margin-top: 23px;
+}
+
+.compatibility-description h4 {
+  margin: 0 0 10px;
+  color: #171717;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.compatibility-description p {
+  margin: 0;
+  color: #777672;
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* ==========================================
+   VIEW COMPONENT BUTTON
+========================================== */
+
+.view-component-button {
+  margin-top: 26px;
+  padding: 13px 19px;
+  border: 1px solid #304ffe;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #304ffe;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.view-component-button:hover {
+  background: #304ffe;
+  color: #ffffff;
+  box-shadow: 0 7px 18px rgba(48, 79, 254, 0.16);
+  transform: translateY(-2px);
+}
+
+/* ==========================================
+   INFORMATION NOTE
+========================================== */
+
+.compatibility-note {
+  display: flex;
+  gap: 14px;
+  margin-top: 24px;
+  padding: 19px 21px;
+  border: 1px solid #dedbd4;
+  border-left: 4px solid #304ffe;
+  border-radius: 5px;
+  background: #ffffff;
+}
+
+.compatibility-note > span {
+  flex-shrink: 0;
+  color: #304ffe;
+  font-size: 19px;
+}
+
+.compatibility-note p {
+  margin: 0;
+  color: #777672;
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+.compatibility-note strong {
+  color: #171717;
+  font-weight: 800;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
+
+@media (max-width: 850px) {
+  .compatibility-section {
+    padding: 65px 5%;
+  }
+
+  .compatibility-form {
+    grid-template-columns: 1fr;
+  }
+
+  .compatibility-button {
+    grid-column: auto;
+  }
+
+  .compatibility-card {
+    padding: 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .compatibility-section {
+    padding: 48px 5%;
+  }
+
+  .compatibility-heading {
+    margin-bottom: 32px;
+  }
+
+  .compatibility-heading h2 {
+    letter-spacing: -1px;
+  }
+
+  .compatibility-card {
+    padding: 22px 17px;
+    border-radius: 5px;
+  }
+
+  .compatibility-card-heading {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .compatibility-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 21px;
+  }
+
+  .compatibility-card-heading h3 {
+    font-size: 17px;
+  }
+
+  .compatibility-detail-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .compatibility-detail-header h3 {
+    font-size: 19px;
+  }
+
+  .compatibility-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .compatibility-details {
+    padding: 19px;
+  }
+
+  .compatibility-status {
+    align-items: flex-start;
+    padding: 17px;
+  }
+
+  .compatibility-note {
+    padding: 16px;
+  }
+}
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .compatibility-field select,
+  .compatibility-button,
+  .compatibility-detail-item,
+  .view-component-button {
+    transition: none;
+  }
+}

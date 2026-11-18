@@ -1,0 +1,398 @@
+
+/* ==========================================
+   ROBOMIND AI - ASSISTANT WIDGET
+   Premium Ivory + Black + Electric Blue
+========================================== */
+
+#robotAssistantWidget {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 9999;
+  font-family: "Manrope", sans-serif;
+}
+
+/* ==========================================
+   FLOATING BUTTON
+========================================== */
+
+.assistant-toggle {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 19px;
+  border: 1px solid #304FFE;
+  border-radius: 4px;
+  background: #304FFE;
+  color: #FFFFFF;
+  box-shadow: 0 8px 25px rgba(48, 79, 254, 0.2);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.assistant-toggle:hover {
+  transform: translateY(-4px);
+  border-color: #203BD2;
+  background: #203BD2;
+  box-shadow: 0 12px 28px rgba(48, 79, 254, 0.25);
+}
+
+.assistant-toggle > span:first-child {
+  font-size: 23px;
+}
+
+/* ==========================================
+   CHAT WINDOW
+========================================== */
+
+.assistant-window {
+  position: absolute;
+  right: 0;
+  bottom: 75px;
+  display: flex;
+  width: min(390px, calc(100vw - 30px));
+  height: min(590px, calc(100vh - 120px));
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #DEDBD4;
+  border-radius: 6px;
+  background: #FFFFFF;
+  box-shadow: 0 18px 55px rgba(23, 23, 23, 0.15);
+  animation: assistantAppear 0.22s ease;
+}
+
+.assistant-window[hidden] {
+  display: none;
+}
+
+@keyframes assistantAppear {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.assistant-header {
+  display: flex;
+  min-height: 75px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 17px;
+  background: #171717;
+  color: #FFFFFF;
+}
+
+.assistant-profile {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.assistant-avatar {
+  display: grid;
+  width: 43px;
+  height: 43px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 23px;
+}
+
+.assistant-profile h3 {
+  margin: 0 0 5px;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.assistant-profile span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #C5C5C5;
+  font-size: 10px;
+}
+
+.assistant-profile span i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #6477FF;
+}
+
+.assistant-close {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  font-size: 23px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.assistant-close:hover {
+  background: #304FFE;
+  border-color: #304FFE;
+}
+
+/* ==========================================
+   WELCOME MESSAGE
+========================================== */
+
+.assistant-welcome {
+  padding: 17px 17px 8px;
+}
+
+.assistant-welcome strong {
+  color: #171717;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.assistant-welcome p {
+  margin: 6px 0 0;
+  color: #777672;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   SUGGESTIONS
+========================================== */
+
+.assistant-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 10px 15px;
+}
+
+.assistant-suggestions button {
+  padding: 8px 10px;
+  border: 1px solid #DEDBD4;
+  border-radius: 3px;
+  background: #F4F2ED;
+  color: #304FFE;
+  font-family: "Manrope", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.assistant-suggestions button:hover {
+  border-color: #304FFE;
+  background: #F0F2FF;
+}
+
+/* ==========================================
+   CHAT MESSAGES
+========================================== */
+
+.assistant-messages {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+  overflow-y: auto;
+  background: #F4F2ED;
+}
+
+.assistant-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 95%;
+}
+
+.assistant-user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.assistant-message-avatar {
+  display: grid;
+  width: 29px;
+  height: 29px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid #DEDBD4;
+  border-radius: 4px;
+  background: #FFFFFF;
+  font-size: 15px;
+}
+
+.assistant-user .assistant-message-avatar {
+  border-color: #B9C5FF;
+  background: #F0F2FF;
+}
+
+.assistant-message-bubble {
+  padding: 11px 13px;
+  border: 1px solid #DEDBD4;
+  border-radius: 4px 10px 10px 10px;
+  background: #FFFFFF;
+  color: #454440;
+  font-size: 11px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.assistant-user .assistant-message-bubble {
+  border-color: #B9C5FF;
+  border-radius: 10px 4px 10px 10px;
+  background: #F0F2FF;
+  color: #203BD2;
+}
+
+/* ==========================================
+   INPUT AREA
+========================================== */
+
+.assistant-input-area {
+  display: flex;
+  gap: 9px;
+  padding: 12px;
+  border-top: 1px solid #DEDBD4;
+  background: #FFFFFF;
+}
+
+.assistant-input-area input {
+  width: 100%;
+  min-width: 0;
+  height: 43px;
+  padding: 0 13px;
+  border: 1px solid #DEDBD4;
+  border-radius: 4px;
+  outline: none;
+  background: #FAF9F6;
+  color: #171717;
+  font-family: "Manrope", sans-serif;
+  font-size: 11px;
+  transition: 0.2s ease;
+}
+
+.assistant-input-area input::placeholder {
+  color: #999894;
+}
+
+.assistant-input-area input:focus {
+  border-color: #304FFE;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(48, 79, 254, 0.09);
+}
+
+.assistant-input-area button {
+  width: 44px;
+  height: 43px;
+  flex-shrink: 0;
+  border: 1px solid #304FFE;
+  border-radius: 4px;
+  background: #304FFE;
+  color: #FFFFFF;
+  font-size: 19px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.assistant-input-area button:hover {
+  border-color: #203BD2;
+  background: #203BD2;
+}
+
+/* ==========================================
+   DISCLAIMER
+========================================== */
+
+.assistant-disclaimer {
+  padding: 0 13px 12px;
+  background: #FFFFFF;
+  color: #999894;
+  text-align: center;
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+.assistant-messages::-webkit-scrollbar {
+  width: 5px;
+}
+
+.assistant-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.assistant-messages::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #C9C6BE;
+}
+
+.assistant-messages::-webkit-scrollbar-thumb:hover {
+  background: #304FFE;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 480px) {
+  #robotAssistantWidget {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .assistant-window {
+    right: 0;
+    bottom: 67px;
+    height: min(570px, calc(100vh - 95px));
+  }
+
+  .assistant-toggle {
+    padding: 11px 15px;
+  }
+}
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .assistant-window {
+    animation: none;
+  }
+
+  .assistant-toggle,
+  .assistant-close,
+  .assistant-suggestions button,
+  .assistant-input-area input,
+  .assistant-input-area button {
+    transition: none;
+  }
+
+  .assistant-toggle:hover {
+    transform: none;
+  }
+}

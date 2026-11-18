@@ -1,0 +1,803 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoboMind AI | 3D Drone Explorer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, sans-serif;
+      background: #f7f5fc;
+      color: #29243b;
+    }
+
+    header {
+      min-height: 76px;
+      padding: 18px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: white;
+      border-bottom: 1px solid #ece7f6;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 800;
+      color: #7047c8;
+    }
+
+    .brand span {
+      color: #29243b;
+    }
+
+    .header-label {
+      color: #827a95;
+      font-size: 13px;
+    }
+
+    main {
+      max-width: 1500px;
+      margin: auto;
+      padding: 30px 4%;
+    }
+
+    .heading {
+      margin-bottom: 24px;
+    }
+
+    .heading h1 {
+      font-size: clamp(25px, 4vw, 34px);
+      margin-bottom: 9px;
+    }
+
+    .heading p {
+      color: #817a91;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .viewer-card,
+    .info-card {
+      background: white;
+      border: 1px solid #ece7f6;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(62, 39, 105, 0.06);
+    }
+
+    .viewer-top {
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 1px solid #f0edf6;
+    }
+
+    .viewer-top h2 {
+      font-size: 16px;
+    }
+
+    .view-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .view-btn {
+      padding: 10px 15px;
+      border-radius: 9px;
+      border: 1px solid #e7e0f3;
+      background: white;
+      color: #655b79;
+      font-size: 12px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .view-btn.active {
+      background: #7047c8;
+      color: white;
+      border-color: #7047c8;
+    }
+
+    #drone-canvas {
+      height: 490px;
+      width: 100%;
+      position: relative;
+      background: radial-gradient(circle at center, #ffffff, #f1ecfb);
+    }
+
+    #drone-canvas canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .viewer-hint {
+      padding: 13px 18px;
+      background: #faf8fe;
+      color: #827a95;
+      font-size: 12px;
+      line-height: 1.6;
+      border-top: 1px solid #f0edf6;
+    }
+
+    .info-card {
+      padding: 20px;
+    }
+
+    .info-card h2 {
+      font-size: 17px;
+      margin-bottom: 18px;
+    }
+
+    .component-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .component-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px;
+      background: #faf9fd;
+      border: 1px solid #eeeaf5;
+      border-radius: 10px;
+      color: #40394f;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      transition: 0.2s;
+    }
+
+    .component-btn:hover,
+    .component-btn.selected {
+      background: #f0eaff;
+      border-color: #bda5ef;
+      color: #7047c8;
+    }
+
+    .component-btn small {
+      color: #9289a2;
+      font-weight: 500;
+    }
+
+    .detail-section {
+      margin-top: 22px;
+      padding-top: 19px;
+      border-top: 1px solid #eeeaf5;
+    }
+
+    .detail-section h3 {
+      font-size: 19px;
+      margin-bottom: 10px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 7px 10px;
+      border-radius: 20px;
+      background: #e7f8ef;
+      color: #23834e;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .detail-section p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #777087;
+      margin-bottom: 12px;
+    }
+
+    .detail-section strong {
+      color: #443b55;
+    }
+
+    .empty-state {
+      color: #938ba1;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .reset-btn {
+      width: 100%;
+      margin-top: 15px;
+      padding: 11px;
+      border: 1px solid #e5def1;
+      border-radius: 9px;
+      color: #7047c8;
+      background: white;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .reset-btn:hover {
+      background: #f5f0ff;
+    }
+
+    @media (max-width: 900px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      #drone-canvas {
+        height: 420px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      main {
+        padding: 22px 14px;
+      }
+
+      header {
+        padding: 16px;
+      }
+
+      .header-label {
+        display: none;
+      }
+
+      #drone-canvas {
+        height: 340px;
+      }
+
+      .viewer-top {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="brand">RoboMind <span>AI</span></div>
+    <div class="header-label">Interactive Robotics Component Explorer</div>
+  </header>
+
+  <main>
+    <section class="heading">
+      <h1>3D Drone Explorer</h1>
+      <p>Explore a drone in 3D, inspect its components and understand how each part works.</p>
+    </section>
+
+    <section class="workspace">
+      <div class="viewer-card">
+        <div class="viewer-top">
+          <h2>Drone 3D Model</h2>
+
+          <div class="view-buttons">
+            <button class="view-btn active" id="assembled-btn">
+              Assembled
+            </button>
+            <button class="view-btn" id="exploded-btn">
+              Exploded View
+            </button>
+          </div>
+        </div>
+
+        <div id="drone-canvas"></div>
+
+        <div class="viewer-hint">
+          Drag to rotate · Scroll to zoom · Click a drone component to inspect it
+        </div>
+      </div>
+
+      <aside class="info-card">
+        <h2>Drone Components</h2>
+
+        <div class="component-list" id="component-list"></div>
+
+        <div class="detail-section" id="component-details">
+          <h3>Select a component</h3>
+          <p class="empty-state">
+            Select a component from the list or click a part of the 3D drone to see its information.
+          </p>
+        </div>
+
+        <button class="reset-btn" id="reset-btn">
+          Reset Selection
+        </button>
+      </aside>
+    </section>
+  </main>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const container = document.getElementById("drone-canvas");
+    const details = document.getElementById("component-details");
+    const componentList = document.getElementById("component-list");
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color("#f3effb");
+
+    const camera = new THREE.PerspectiveCamera(
+      45,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      100
+    );
+
+    camera.position.set(7, 6, 8);
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true
+    });
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.minDistance = 4;
+    controls.maxDistance = 17;
+    controls.target.set(0, 0, 0);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 2));
+
+    const mainLight = new THREE.DirectionalLight(0xffffff, 3);
+    mainLight.position.set(5, 10, 7);
+    mainLight.castShadow = true;
+    scene.add(mainLight);
+
+    const fillLight = new THREE.DirectionalLight(0xd9c9ff, 1.5);
+    fillLight.position.set(-6, 4, -5);
+    scene.add(fillLight);
+
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(200, 200),
+      new THREE.MeshStandardMaterial({
+        color: "#f3effb",
+        roughness: 1
+      })
+    );
+
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -2.2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    const drone = new THREE.Group();
+    scene.add(drone);
+
+    const parts = {};
+
+    const componentData = {
+      body: {
+        name: "Drone Frame",
+        purpose: "Supports and connects the drone's major components.",
+        function: "Provides the main structure and holds the arms, motors and electronic parts.",
+        location: "Center of the drone",
+        used: true
+      },
+      motor1: {
+        name: "Brushless DC Motor",
+        purpose: "Produces rotational movement for the propellers.",
+        function: "Converts electrical energy into mechanical rotation.",
+        location: "At the end of each drone arm",
+        used: true
+      },
+      propeller1: {
+        name: "Propeller",
+        purpose: "Produces thrust to lift and move the drone.",
+        function: "Pushes air downward to generate an upward force.",
+        location: "Above each motor",
+        used: true
+      },
+      battery: {
+        name: "LiPo Battery",
+        purpose: "Supplies electrical power to the drone.",
+        function: "Stores energy and provides power to the electronic systems and motors.",
+        location: "Under the central frame",
+        used: true
+      },
+      controller: {
+        name: "Flight Controller",
+        purpose: "Acts as the main control system of the drone.",
+        function: "Processes sensor information and controls motor output.",
+        location: "Inside the central frame",
+        used: true
+      },
+      esc: {
+        name: "Electronic Speed Controller (ESC)",
+        purpose: "Controls the speed of brushless motors.",
+        function: "Regulates electrical power supplied to each motor.",
+        location: "Near the motor connections",
+        used: true
+      },
+      gps: {
+        name: "GPS Module",
+        purpose: "Provides geographical positioning information.",
+        function: "Receives satellite signals to estimate the drone's position.",
+        location: "On the upper section",
+        used: true
+      }
+    };
+
+    const clickableObjects = [];
+
+    function material(color, metalness = 0.25) {
+      return new THREE.MeshStandardMaterial({
+        color,
+        metalness,
+        roughness: 0.42
+      });
+    }
+
+    function createPart(id, geometry, color, position, parent = drone) {
+      const mesh = new THREE.Mesh(geometry, material(color));
+      mesh.position.set(...position);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      mesh.userData.componentId = id;
+
+      parent.add(mesh);
+      clickableObjects.push(mesh);
+
+      if (!parts[id]) {
+        parts[id] = [];
+      }
+
+      parts[id].push(mesh);
+      return mesh;
+    }
+
+    function createRod(id, start, end, radius, color) {
+      const direction = new THREE.Vector3(...end).sub(
+        new THREE.Vector3(...start)
+      );
+
+      const geometry = new THREE.CylinderGeometry(
+        radius,
+        radius,
+        direction.length(),
+        16
+      );
+
+      const mesh = createPart(
+        id,
+        geometry,
+        color,
+        [
+          (start[0] + end[0]) / 2,
+          (start[1] + end[1]) / 2,
+          (start[2] + end[2]) / 2
+        ]
+      );
+
+      mesh.quaternion.setFromUnitVectors(
+        new THREE.Vector3(0, 1, 0),
+        direction.normalize()
+      );
+
+      return mesh;
+    }
+
+    // Central frame
+    createPart(
+      "body",
+      new THREE.BoxGeometry(1.5, 0.35, 1.2),
+      "#7650d8",
+      [0, 0, 0]
+    );
+
+    // Drone arms
+    const armPositions = [
+      [[0.45, 0, 0.35], [2.1, 0, 1.65]],
+      [[-0.45, 0, 0.35], [-2.1, 0, 1.65]],
+      [[0.45, 0, -0.35], [2.1, 0, -1.65]],
+      [[-0.45, 0, -0.35], [-2.1, 0, -1.65]]
+    ];
+
+    armPositions.forEach(([start, end]) => {
+      createRod("body", start, end, 0.12, "#8d78bd");
+    });
+
+    // Four motors and propellers
+    const motorLocations = [
+      [2.1, 0.2, 1.65],
+      [-2.1, 0.2, 1.65],
+      [2.1, 0.2, -1.65],
+      [-2.1, 0.2, -1.65]
+    ];
+
+    motorLocations.forEach((position, index) => {
+      const [x, y, z] = position;
+
+      createPart(
+        "motor1",
+        new THREE.CylinderGeometry(0.28, 0.28, 0.35, 24),
+        "#33313c",
+        [x, y, z]
+      );
+
+      createPart(
+        "propeller1",
+        new THREE.BoxGeometry(1.5, 0.07, 0.16),
+        "#b8a0eb",
+        [x, y + 0.25, z]
+      );
+
+      createPart(
+        "propeller1",
+        new THREE.BoxGeometry(0.16, 0.07, 1.5),
+        "#b8a0eb",
+        [x, y + 0.25, z]
+      );
+
+      createPart(
+        "motor1",
+        new THREE.CylinderGeometry(0.08, 0.08, 0.12, 16),
+        "#d7c7f5",
+        [x, y + 0.34, z]
+      );
+    });
+
+    // Battery
+    createPart(
+      "battery",
+      new THREE.BoxGeometry(0.85, 0.35, 0.65),
+      "#34323d",
+      [0, -0.38, 0]
+    );
+
+    // Flight controller
+    createPart(
+      "controller",
+      new THREE.BoxGeometry(0.65, 0.15, 0.55),
+      "#35a67b",
+      [0, 0.3, 0]
+    );
+
+    // ESC modules
+    const escPositions = [
+      [0.75, -0.18, 0.25],
+      [-0.75, -0.18, 0.25],
+      [0.75, -0.18, -0.25],
+      [-0.75, -0.18, -0.25]
+    ];
+
+    escPositions.forEach(position => {
+      createPart(
+        "esc",
+        new THREE.BoxGeometry(0.3, 0.12, 0.22),
+        "#e3a34b",
+        position
+      );
+    });
+
+    // GPS module and antenna
+    createPart(
+      "gps",
+      new THREE.BoxGeometry(0.4, 0.2, 0.4),
+      "#e3b94e",
+      [0, 0.65, -0.15]
+    );
+
+    createPart(
+      "gps",
+      new THREE.CylinderGeometry(0.04, 0.04, 0.4, 12),
+      "#8d78bd",
+      [0, 0.95, -0.15]
+    );
+
+    // Save original positions and exploded positions
+    const originalPositions = new Map();
+    const explodedPositions = new Map();
+
+    clickableObjects.forEach((mesh, index) => {
+      originalPositions.set(mesh, mesh.position.clone());
+
+      const id = mesh.userData.componentId;
+      const offset = new THREE.Vector3();
+
+      if (id === "body") {
+        offset.set(0, 0.1, 0);
+      } else if (id === "motor1" || id === "propeller1") {
+        const direction = mesh.position.clone();
+        if (direction.length() < 0.1) {
+          direction.set(index % 2 ? 1 : -1, 0, 0);
+        }
+        offset.copy(direction.normalize().multiplyScalar(1.5));
+        offset.y += 0.8;
+      } else if (id === "battery") {
+        offset.set(0, -1.7, 0);
+      } else if (id === "controller") {
+        offset.set(0, 1.5, 0);
+      } else if (id === "esc") {
+        offset.set(0, -0.8, 1.3);
+      } else if (id === "gps") {
+        offset.set(0, 1.9, -0.4);
+      }
+
+      explodedPositions.set(
+        mesh,
+        originalPositions.get(mesh).clone().add(offset)
+      );
+    });
+
+    let exploded = false;
+    let selectedId = null;
+    let selectedObjects = [];
+
+    function setView(isExploded) {
+      exploded = isExploded;
+
+      clickableObjects.forEach(mesh => {
+        const destination = exploded
+          ? explodedPositions.get(mesh)
+          : originalPositions.get(mesh);
+
+        mesh.position.copy(destination);
+      });
+
+      document.getElementById("assembled-btn").classList.toggle(
+        "active",
+        !exploded
+      );
+
+      document.getElementById("exploded-btn").classList.toggle(
+        "active",
+        exploded
+      );
+
+      controls.target.set(0, 0, 0);
+    }
+
+    function selectComponent(id) {
+      selectedId = id;
+      selectedObjects = parts[id] || [];
+
+      document.querySelectorAll(".component-btn").forEach(button => {
+        button.classList.toggle(
+          "selected",
+          button.dataset.id === id
+        );
+      });
+
+      const info = componentData[id];
+
+      if (!info) return;
+
+      details.innerHTML = `
+        <h3>${info.name}</h3>
+        <div class="status">✓ Used in this drone model</div>
+        <p><strong>Purpose:</strong><br>${info.purpose}</p>
+        <p><strong>Working principle:</strong><br>${info.function}</p>
+        <p><strong>Location:</strong><br>${info.location}</p>
+      `;
+    }
+
+    // Create component list
+    Object.entries(componentData).forEach(([id, info]) => {
+      const button = document.createElement("button");
+      button.className = "component-btn";
+      button.dataset.id = id;
+
+      button.innerHTML = `
+        <span>${info.name}</span>
+        <small>View →</small>
+      `;
+
+      button.addEventListener("click", () => {
+        selectComponent(id);
+      });
+
+      componentList.appendChild(button);
+    });
+
+    // Click 3D objects using raycasting
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+
+    renderer.domElement.addEventListener("pointerdown", event => {
+      const rect = renderer.domElement.getBoundingClientRect();
+
+      pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(pointer, camera);
+
+      const hits = raycaster.intersectObjects(clickableObjects);
+
+      if (hits.length > 0) {
+        const id = hits[0].object.userData.componentId;
+        selectComponent(id);
+      }
+    });
+
+    document.getElementById("assembled-btn").addEventListener(
+      "click",
+      () => setView(false)
+    );
+
+    document.getElementById("exploded-btn").addEventListener(
+      "click",
+      () => setView(true)
+    );
+
+    document.getElementById("reset-btn").addEventListener("click", () => {
+      selectedId = null;
+      selectedObjects = [];
+
+      document.querySelectorAll(".component-btn").forEach(button => {
+        button.classList.remove("selected");
+      });
+
+      details.innerHTML = `
+        <h3>Select a component</h3>
+        <p class="empty-state">
+          Select a component from the list or click a part of the 3D drone to see its information.
+        </p>
+      `;
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    window.addEventListener("resize", () => {
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(width, height);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#f4f2ed">
+
+  <meta
+    name="description"
+    content="RoboMind AI - Explore robots, electronic components and robotics technology."
+  >
+
+  <title>RoboMind AI | Robotics Explorer</title>
+</head>
+
+<body>
+
+  <div id="app"></div>
+
+  <!-- Main application: creates the initial application data -->
+  <script type="module" src="/src/main.js"></script>
+
+  <!-- Restore saved robots and component images -->
+  <script type="module" src="/src/admin-data.js"></script>
+
+  <!-- Synchronize restored data with Robot Explorer -->
+  <script type="module" src="/src/image-sync.js"></script>
+
+  <!-- Navigation -->
+  <script type="module" src="/src/robot-navigation.js"></script>
+
+  <!-- User dashboard -->
+  <script type="module" src="/src/dashboard.js"></script>
+
+  <!-- Login and Admin System -->
+  <script type="module" src="/src/auth.js"></script>
+
+</body>
+</html>
