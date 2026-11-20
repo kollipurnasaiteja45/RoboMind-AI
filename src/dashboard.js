@@ -1,5 +1,8 @@
-
 import "./dashboard.css";
+
+// ======================================================
+// ROBOMIND AI — MAIN USER DASHBOARD
+// ======================================================
 
 const recentRobots = [];
 const recentComponents = [];
@@ -7,11 +10,19 @@ const recentComponents = [];
 const popularComponents = [
   "Flight Controller",
   "Brushless Motor",
+  "ESC",
+  "LiPo Battery",
+  "GPS Module",
+  "Servo Motor",
   "Arduino",
-  "ESP32",
-  "Ultrasonic Sensor",
-  "LiDAR Sensor"
+  "DC Motor"
 ];
+
+let dashboardInitialized = false;
+
+// ------------------------------------------------------
+// HELPERS
+// ------------------------------------------------------
 
 function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, (character) => {
@@ -27,63 +38,117 @@ function escapeHTML(value) {
   });
 }
 
-// --------------------------------------------------
-// PAGE NAVIGATION
-// --------------------------------------------------
+function getRobotCount() {
+  return document.querySelectorAll("#app .robot-card").length;
+}
+
+function getComponentCount() {
+  return document.querySelectorAll("#app .search-card").length;
+}
+
+function getRobotCard(robotName) {
+  return [...document.querySelectorAll("#app .robot-card")].find(
+    (card) =>
+      card.querySelector("h3")?.textContent.trim() === robotName
+  );
+}
+
+// ------------------------------------------------------
+// NAVIGATION
+// ------------------------------------------------------
+
+function setActiveSidebarLink() {
+  const hash = window.location.hash || "#dashboard";
+
+  document.querySelectorAll(".dashboard-nav-link").forEach((link) => {
+    const active = link.getAttribute("href") === hash;
+
+    link.classList.toggle("active", active);
+
+    if (active) {
+      link.setAttribute("aria-current", "page");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
+}
+
+function closeDashboardSidebar() {
+  const sidebar = document.querySelector("#dashboardSidebar");
+  const backdrop = document.querySelector("#dashboardSidebarBackdrop");
+  const toggle = document.querySelector("#dashboardMenuToggle");
+
+  sidebar?.classList.remove("is-open");
+  backdrop?.classList.remove("is-visible");
+  toggle?.setAttribute("aria-expanded", "false");
+}
 
 function setPageFromHash() {
   const dashboard = document.querySelector("#dashboard");
   const main = document.querySelector("#app main");
+  const header = document.querySelector("#app .header");
+  const footer = document.querySelector("#app .footer");
 
   if (!dashboard || !main) return;
 
-  const isDashboard = window.location.hash === "#dashboard";
+  const hash = window.location.hash || "#dashboard";
+  const isDashboard = hash === "#dashboard";
 
-  if (isDashboard) {
-    dashboard.style.display = "block";
-    main.style.display = "none";
-  } else {
-    dashboard.style.display = "none";
-    main.style.display = "";
+  // IMPORTANT: Keep flex layout on the dashboard.
+  dashboard.style.display = isDashboard ? "flex" : "none";
+
+  main.style.display = isDashboard ? "none" : "";
+
+  if (header) {
+    header.style.display = isDashboard ? "none" : "";
   }
 
-  document.querySelectorAll(".header nav a").forEach((link) => {
-    const isActive =
-      link.getAttribute("href") === window.location.hash ||
-      (!window.location.hash && link.getAttribute("href") === "#home");
+  if (footer) {
+    footer.style.display = isDashboard ? "none" : "";
+  }
 
-    if (isActive) {
+  setActiveSidebarLink();
+
+  document.querySelectorAll("#app .header nav a").forEach((link) => {
+    const active = link.getAttribute("href") === hash;
+
+    if (active) {
       link.setAttribute("aria-current", "page");
     } else {
       link.removeAttribute("aria-current");
     }
   });
 
-  // Scroll to the selected section after changing pages.
-  if (!isDashboard && window.location.hash) {
-    const target = document.querySelector(window.location.hash);
+  closeDashboardSidebar();
 
-    if (target) {
-      requestAnimationFrame(() => {
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      });
-    }
-  } else if (isDashboard) {
+  if (isDashboard) {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: "auto"
+    });
+
+    return;
+  }
+
+  // Use getElementById instead of querySelector with a URL hash.
+  const targetId = hash.startsWith("#") ? hash.slice(1) : hash;
+  const target = document.getElementById(targetId);
+
+  if (target) {
+    requestAnimationFrame(() => {
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
     });
   }
 }
 
 window.addEventListener("hashchange", setPageFromHash);
 
-// --------------------------------------------------
+// ------------------------------------------------------
 // RECENT ACTIVITY
-// --------------------------------------------------
+// ------------------------------------------------------
 
 function addRecentItem(list, value) {
   if (!value) return;
@@ -101,14 +166,6 @@ function addRecentItem(list, value) {
   }
 }
 
-function getRobotCount() {
-  return document.querySelectorAll(".robot-card").length;
-}
-
-function getComponentCount() {
-  return document.querySelectorAll(".search-card").length;
-}
-
 function renderRecentRobots() {
   const container = document.querySelector("#dashboardRecentRobots");
 
@@ -117,18 +174,16 @@ function renderRecentRobots() {
   if (recentRobots.length === 0) {
     container.innerHTML = `
       <div class="dashboard-empty">
-        <span>🤖</span>
-        <p>Your recently explored robots will appear here.</p>
+        <span class="dashboard-empty-icon">🤖</span>
+        <p>Robots you explore will appear here.</p>
       </div>
     `;
+
     return;
   }
 
   container.innerHTML = recentRobots.map((robotName) => {
-    const robotCard = [...document.querySelectorAll(".robot-card")]
-      .find((card) =>
-        card.querySelector("h3")?.textContent.trim() === robotName
-      );
+    const robotCard = getRobotCard(robotName);
 
     const emoji =
       robotCard?.querySelector(".robot-emoji")?.textContent || "🤖";
@@ -140,8 +195,8 @@ function renderRecentRobots() {
         data-robot-name="${escapeHTML(robotName)}"
       >
         <span class="dashboard-recent-icon">${escapeHTML(emoji)}</span>
-        <span>${escapeHTML(robotName)}</span>
-        <span class="dashboard-arrow">→</span>
+        <span class="dashboard-recent-name">${escapeHTML(robotName)}</span>
+        <span class="dashboard-arrow" aria-hidden="true">↗</span>
       </button>
     `;
   }).join("");
@@ -155,10 +210,11 @@ function renderRecentComponents() {
   if (recentComponents.length === 0) {
     container.innerHTML = `
       <div class="dashboard-empty">
-        <span>🔧</span>
-        <p>Your recently viewed components will appear here.</p>
+        <span class="dashboard-empty-icon">⚙️</span>
+        <p>Components you view will appear here.</p>
       </div>
     `;
+
     return;
   }
 
@@ -169,15 +225,27 @@ function renderRecentComponents() {
       data-component-name="${escapeHTML(componentName)}"
     >
       <span class="dashboard-recent-icon">⚙️</span>
-      <span>${escapeHTML(componentName)}</span>
-      <span class="dashboard-arrow">→</span>
+      <span class="dashboard-recent-name">${escapeHTML(componentName)}</span>
+      <span class="dashboard-arrow" aria-hidden="true">↗</span>
     </button>
   `).join("");
 }
 
+// ------------------------------------------------------
+// DASHBOARD STATISTICS
+// ------------------------------------------------------
+
 function renderDashboardStats() {
   const robotCount = document.querySelector("#dashboardRobotCount");
   const componentCount = document.querySelector("#dashboardComponentCount");
+
+  const robotRecentCount = document.querySelector(
+    "#dashboardRobotRecentCount"
+  );
+
+  const componentRecentCount = document.querySelector(
+    "#dashboardComponentRecentCount"
+  );
 
   if (robotCount) {
     robotCount.textContent = getRobotCount();
@@ -186,16 +254,6 @@ function renderDashboardStats() {
   if (componentCount) {
     componentCount.textContent = getComponentCount();
   }
-}
-
-function updateRecentCounts() {
-  const robotRecentCount = document.querySelector(
-    "#dashboardRobotRecentCount"
-  );
-
-  const componentRecentCount = document.querySelector(
-    "#dashboardComponentRecentCount"
-  );
 
   if (robotRecentCount) {
     robotRecentCount.textContent = recentRobots.length;
@@ -206,21 +264,84 @@ function updateRecentCounts() {
   }
 }
 
-// --------------------------------------------------
-// CREATE DASHBOARD PAGE
-// --------------------------------------------------
+// ------------------------------------------------------
+// OPEN ROBOT
+// ------------------------------------------------------
 
-function createDashboard() {
-  const header = document.querySelector(".header");
-  const main = document.querySelector("#app main");
+function openRobot(robotName) {
+  const robotCard = getRobotCard(robotName);
 
-  if (
-    !header ||
-    !main ||
-    document.querySelector("#dashboard")
-  ) {
+  if (!robotCard) {
+    console.warn("RoboMind: Robot not found:", robotName);
     return;
   }
+
+  if (window.location.hash !== "#explore") {
+    window.location.hash = "#explore";
+  } else {
+    setPageFromHash();
+  }
+
+  // Existing main.js handles the robot-card click.
+  robotCard.click();
+}
+
+// ------------------------------------------------------
+// OPEN COMPONENT
+// ------------------------------------------------------
+
+function openComponent(componentName) {
+  if (!componentName) return;
+
+  // First check whether the component is in the active robot.
+  const componentButton = [
+    ...document.querySelectorAll("#app .component-button")
+  ].find((button) => button.dataset.component === componentName);
+
+  if (componentButton) {
+    if (window.location.hash !== "#explore") {
+      window.location.hash = "#explore";
+    } else {
+      setPageFromHash();
+    }
+
+    componentButton.click();
+    return;
+  }
+
+  // If it is not in the active robot, search the component gallery.
+  const searchInput = document.querySelector("#searchInput");
+
+  if (!searchInput) {
+    console.warn("RoboMind: Component search input was not found.");
+    return;
+  }
+
+  if (window.location.hash !== "#component-search") {
+    window.location.hash = "#component-search";
+  } else {
+    setPageFromHash();
+  }
+
+  searchInput.value = componentName;
+
+  searchInput.dispatchEvent(
+    new Event("input", { bubbles: true })
+  );
+}
+
+// ------------------------------------------------------
+// DASHBOARD HTML
+// ------------------------------------------------------
+
+function createDashboard() {
+  const app = document.querySelector("#app");
+  const header = document.querySelector("#app .header");
+  const main = document.querySelector("#app main");
+
+  if (!app || !header || !main) return;
+
+  if (document.querySelector("#dashboard")) return;
 
   const dashboard = document.createElement("section");
 
@@ -228,211 +349,437 @@ function createDashboard() {
   dashboard.className = "dashboard-section";
 
   dashboard.innerHTML = `
-    <div class="dashboard-container">
+    <!-- SIDEBAR -->
+    <aside class="dashboard-sidebar" id="dashboardSidebar">
 
-      <div class="dashboard-welcome">
-        <div class="dashboard-welcome-content">
+      <a
+        class="dashboard-brand"
+        href="#dashboard"
+        aria-label="RoboMind AI Dashboard"
+      >
+        <span class="dashboard-brand-mark">R</span>
 
-          <span class="dashboard-label">
-            <span class="dashboard-status-dot"></span>
-            ROBOMIND AI WORKSPACE
+        <span class="dashboard-brand-copy">
+          <strong>RoboMind<span> AI</span></strong>
+          <small>ROBOTICS WORKSPACE</small>
+        </span>
+      </a>
+
+      <div class="dashboard-sidebar-label">WORKSPACE</div>
+
+      <nav
+        class="dashboard-sidebar-nav"
+        aria-label="Dashboard navigation"
+      >
+        <a class="dashboard-nav-link active" href="#dashboard">
+          <span class="dashboard-nav-icon">▦</span>
+          <span>Overview</span>
+        </a>
+
+        <a class="dashboard-nav-link" href="#explore">
+          <span class="dashboard-nav-icon">⌘</span>
+          <span>Robot Explorer</span>
+        </a>
+
+        <a class="dashboard-nav-link" href="#component-search">
+          <span class="dashboard-nav-icon">◈</span>
+          <span>Component Gallery</span>
+        </a>
+      </nav>
+
+      <div class="dashboard-sidebar-bottom">
+
+        <div class="dashboard-sidebar-note">
+          <span class="dashboard-note-icon">✦</span>
+
+          <strong>Keep exploring</strong>
+
+          <p>
+            Discover how robotics systems work,
+            one component at a time.
+          </p>
+
+          <a href="#explore">
+            Start learning <span>→</span>
+          </a>
+        </div>
+
+        <div class="dashboard-sidebar-footer">
+          <span class="dashboard-online-dot"></span>
+          Robotics learning workspace
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- MAIN DASHBOARD -->
+    <div class="dashboard-main">
+
+      <!-- TOPBAR -->
+      <header class="dashboard-topbar">
+
+        <div class="dashboard-topbar-left">
+
+          <button
+            class="dashboard-menu-toggle"
+            id="dashboardMenuToggle"
+            type="button"
+            aria-label="Toggle dashboard menu"
+            aria-expanded="false"
+          >
+            ☰
+          </button>
+
+          <div>
+            <span class="dashboard-breadcrumb">
+              WORKSPACE / OVERVIEW
+            </span>
+
+            <h1>Dashboard</h1>
+          </div>
+
+        </div>
+
+        <div class="dashboard-topbar-right">
+
+          <span class="dashboard-status-pill">
+            <span class="dashboard-online-dot"></span>
+            System ready
           </span>
 
-          <h1>Welcome to Your Robotics Dashboard</h1>
+          <div class="dashboard-avatar" aria-label="RoboMind user">
+            RM
+          </div>
 
-          <p>
-            Explore robotic systems, discover electronic components
-            and expand your understanding of robotics technology.
-          </p>
+        </div>
+      </header>
 
-          <div class="dashboard-actions">
-            <a href="#explore" class="dashboard-primary-button">
-              Explore Robots <span>→</span>
+      <!-- DASHBOARD CONTENT -->
+      <div class="dashboard-content">
+
+        <!-- WELCOME SECTION -->
+        <section class="dashboard-welcome">
+
+          <div class="dashboard-welcome-content">
+
+            <span class="dashboard-eyebrow">
+              <span class="dashboard-eyebrow-line"></span>
+              YOUR ROBOTICS WORKSPACE
+            </span>
+
+            <h2>
+              Explore ideas.<br>
+              <span>Build intelligence.</span>
+            </h2>
+
+            <p>
+              Discover robotic systems, understand electronic components,
+              and build your knowledge of modern robotics technology.
+            </p>
+
+            <div class="dashboard-actions">
+
+              <a href="#explore" class="dashboard-primary-button">
+                Explore robots <span>→</span>
+              </a>
+
+              <a
+                href="#component-search"
+                class="dashboard-secondary-button"
+              >
+                Browse components
+              </a>
+
+            </div>
+          </div>
+
+          <div class="dashboard-hero-art" aria-hidden="true">
+
+            <div class="dashboard-hero-ring ring-a"></div>
+            <div class="dashboard-hero-ring ring-b"></div>
+
+            <div class="dashboard-hero-core">🤖</div>
+
+            <span class="dashboard-hero-chip chip-a">AI</span>
+            <span class="dashboard-hero-chip chip-b">⚙</span>
+            <span class="dashboard-hero-chip chip-c">⌁</span>
+
+          </div>
+
+          <div class="dashboard-hero-index">
+            01 <span>/ EXPLORE</span>
+          </div>
+
+        </section>
+
+        <!-- STATISTICS -->
+        <section
+          class="dashboard-overview-section"
+          aria-label="Workspace statistics"
+        >
+
+          <div class="dashboard-section-title">
+
+            <div>
+              <span class="dashboard-kicker">AT A GLANCE</span>
+              <h2>Your workspace</h2>
+            </div>
+
+            <span class="dashboard-section-caption">
+              LIVE CONTENT COUNTS
+            </span>
+
+          </div>
+
+          <div class="dashboard-stats">
+
+            <article class="dashboard-stat-card">
+
+              <span class="dashboard-stat-icon stat-blue">🤖</span>
+
+              <div class="dashboard-stat-copy">
+                <span>Total robots</span>
+                <strong id="dashboardRobotCount">0</strong>
+                <small>Available robot models</small>
+              </div>
+
+              <span class="dashboard-stat-index">01</span>
+
+            </article>
+
+            <article class="dashboard-stat-card">
+
+              <span class="dashboard-stat-icon stat-ivory">⚙️</span>
+
+              <div class="dashboard-stat-copy">
+                <span>Total components</span>
+                <strong id="dashboardComponentCount">0</strong>
+                <small>In the component library</small>
+              </div>
+
+              <span class="dashboard-stat-index">02</span>
+
+            </article>
+
+            <article class="dashboard-stat-card">
+
+              <span class="dashboard-stat-icon stat-ivory">↗</span>
+
+              <div class="dashboard-stat-copy">
+                <span>Robots explored</span>
+                <strong id="dashboardRobotRecentCount">0</strong>
+                <small>Your recent robot activity</small>
+              </div>
+
+              <span class="dashboard-stat-index">03</span>
+
+            </article>
+
+            <article class="dashboard-stat-card">
+
+              <span class="dashboard-stat-icon stat-ivory">◈</span>
+
+              <div class="dashboard-stat-copy">
+                <span>Components viewed</span>
+                <strong id="dashboardComponentRecentCount">0</strong>
+                <small>Your recent component activity</small>
+              </div>
+
+              <span class="dashboard-stat-index">04</span>
+
+            </article>
+
+          </div>
+        </section>
+
+        <!-- QUICK ACCESS -->
+        <section class="dashboard-overview-section">
+
+          <div class="dashboard-section-title">
+
+            <div>
+              <span class="dashboard-kicker">DISCOVER</span>
+              <h2>Explore your tools</h2>
+              <p>Jump straight into a learning area.</p>
+            </div>
+
+            <span class="dashboard-section-caption">
+              QUICK ACCESS
+            </span>
+
+          </div>
+
+          <div class="dashboard-quick-grid">
+
+            <a href="#explore" class="dashboard-quick-card">
+
+              <span class="dashboard-quick-top">
+                <span>01 / ROBOTS</span>
+                <span>↗</span>
+              </span>
+
+              <span class="dashboard-quick-icon">🤖</span>
+
+              <h3>Robot Explorer</h3>
+
+              <p>
+                Explore robot types and understand the
+                components used in each system.
+              </p>
+
+              <span class="dashboard-card-link">
+                Open explorer <b>→</b>
+              </span>
+
             </a>
 
-            <a href="#component-search" class="dashboard-secondary-button">
-              Browse Components
-            </a>
-          </div>
-
-        </div>
-
-        <div class="dashboard-decoration" aria-hidden="true">
-          <div class="dashboard-orbit orbit-one"></div>
-          <div class="dashboard-orbit orbit-two"></div>
-          <div class="dashboard-robot-symbol">🤖</div>
-          <span class="dashboard-floating-icon floating-one">⚙️</span>
-          <span class="dashboard-floating-icon floating-two">🛰️</span>
-          <span class="dashboard-floating-icon floating-three">🔋</span>
-        </div>
-      </div>
-
-      <div class="dashboard-stats">
-
-        <div class="dashboard-stat-card">
-          <div class="dashboard-stat-icon">🤖</div>
-          <div>
-            <p>Total Robots</p>
-            <h2 id="dashboardRobotCount">0</h2>
-            <span>Available robot models</span>
-          </div>
-        </div>
-
-        <div class="dashboard-stat-card">
-          <div class="dashboard-stat-icon">⚙️</div>
-          <div>
-            <p>Total Components</p>
-            <h2 id="dashboardComponentCount">0</h2>
-            <span>Explore the component library</span>
-          </div>
-        </div>
-
-        <div class="dashboard-stat-card">
-          <div class="dashboard-stat-icon">🔍</div>
-          <div>
-            <p>Recently Explored</p>
-            <h2 id="dashboardRobotRecentCount">0</h2>
-            <span>Robots you've visited</span>
-          </div>
-        </div>
-
-        <div class="dashboard-stat-card">
-          <div class="dashboard-stat-icon">📘</div>
-          <div>
-            <p>Components Viewed</p>
-            <h2 id="dashboardComponentRecentCount">0</h2>
-            <span>Components you've explored</span>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="dashboard-section-heading">
-        <div>
-          <span class="dashboard-label">QUICK ACCESS</span>
-          <h2>Explore RoboMind AI</h2>
-          <p>Go directly to the tools and learning areas.</p>
-        </div>
-      </div>
-
-      <div class="dashboard-quick-grid">
-
-        <a href="#explore" class="dashboard-quick-card">
-          <span class="dashboard-quick-icon">🤖</span>
-          <h3>Robot Explorer</h3>
-          <p>Discover different robots and their components.</p>
-          <span class="dashboard-card-link">Explore robots →</span>
-        </a>
-
-        <a href="#component-search" class="dashboard-quick-card">
-          <span class="dashboard-quick-icon">⚙️</span>
-          <h3>Component Gallery</h3>
-          <p>Search and learn about electronic components.</p>
-          <span class="dashboard-card-link">Browse gallery →</span>
-        </a>
-
-        <a href="#component-search" class="dashboard-quick-card">
-          <span class="dashboard-quick-icon">🔎</span>
-          <h3>Component Search</h3>
-          <p>Find components by name, category or application.</p>
-          <span class="dashboard-card-link">Search components →</span>
-        </a>
-
-        <a href="#explore" class="dashboard-quick-card">
-          <span class="dashboard-quick-icon">📚</span>
-          <h3>Learning Workspace</h3>
-          <p>Understand how robotic systems and components work.</p>
-          <span class="dashboard-card-link">Start learning →</span>
-        </a>
-
-      </div>
-
-      <div class="dashboard-two-column">
-
-        <div class="dashboard-content-panel">
-          <div class="dashboard-panel-heading">
-            <div>
-              <span class="dashboard-label">YOUR ACTIVITY</span>
-              <h2>Recently Explored Robots</h2>
-            </div>
-            <a href="#explore">View all →</a>
-          </div>
-
-          <div
-            id="dashboardRecentRobots"
-            class="dashboard-recent-list"
-          ></div>
-        </div>
-
-        <div class="dashboard-content-panel">
-          <div class="dashboard-panel-heading">
-            <div>
-              <span class="dashboard-label">YOUR ACTIVITY</span>
-              <h2>Recently Viewed Components</h2>
-            </div>
-            <a href="#component-search">View all →</a>
-          </div>
-
-          <div
-            id="dashboardRecentComponents"
-            class="dashboard-recent-list"
-          ></div>
-        </div>
-
-      </div>
-
-      <div class="dashboard-content-panel dashboard-popular-panel">
-        <div class="dashboard-panel-heading">
-          <div>
-            <span class="dashboard-label">POPULAR COMPONENTS</span>
-            <h2>Start Exploring Components</h2>
-            <p>Quickly find some important robotics components.</p>
-          </div>
-        </div>
-
-        <div class="dashboard-popular-list">
-          ${popularComponents.map((component) => `
-            <button
-              type="button"
-              class="dashboard-popular-chip"
-              data-popular-component="${escapeHTML(component)}"
+            <a
+              href="#component-search"
+              class="dashboard-quick-card"
             >
-              <span>⚙️</span>
-              ${escapeHTML(component)}
-              <span class="dashboard-chip-arrow">↗</span>
-            </button>
-          `).join("")}
-        </div>
+
+              <span class="dashboard-quick-top">
+                <span>02 / COMPONENTS</span>
+                <span>↗</span>
+              </span>
+
+              <span class="dashboard-quick-icon">⚙️</span>
+
+              <h3>Component Gallery</h3>
+
+              <p>
+                Browse electronic components, their functions,
+                specifications and applications.
+              </p>
+
+              <span class="dashboard-card-link">
+                Open gallery <b>→</b>
+              </span>
+
+            </a>
+
+          </div>
+        </section>
+
+        <!-- RECENT ACTIVITY -->
+        <section class="dashboard-overview-section">
+
+          <div class="dashboard-section-title">
+
+            <div>
+              <span class="dashboard-kicker">YOUR ACTIVITY</span>
+              <h2>Pick up where you left off</h2>
+              <p>Your latest explorations in this session.</p>
+            </div>
+
+          </div>
+
+          <div class="dashboard-activity-grid">
+
+            <article class="dashboard-content-panel">
+
+              <div class="dashboard-panel-heading">
+
+                <div>
+                  <span class="dashboard-panel-index">01</span>
+                  <h3>Recently explored robots</h3>
+                </div>
+
+                <a href="#explore">View all ↗</a>
+
+              </div>
+
+              <div
+                id="dashboardRecentRobots"
+                class="dashboard-recent-list"
+              ></div>
+
+            </article>
+
+            <article class="dashboard-content-panel">
+
+              <div class="dashboard-panel-heading">
+
+                <div>
+                  <span class="dashboard-panel-index">02</span>
+                  <h3>Recently viewed components</h3>
+                </div>
+
+                <a href="#component-search">View all ↗</a>
+
+              </div>
+
+              <div
+                id="dashboardRecentComponents"
+                class="dashboard-recent-list"
+              ></div>
+
+            </article>
+
+          </div>
+        </section>
+
+        <!-- POPULAR COMPONENTS -->
+        <section class="dashboard-overview-section">
+
+          <div class="dashboard-section-title">
+
+            <div>
+              <span class="dashboard-kicker">POPULAR PICKS</span>
+              <h2>Start with a component</h2>
+              <p>Explore frequently used robotics components.</p>
+            </div>
+
+          </div>
+
+          <div class="dashboard-popular-list">
+
+            ${popularComponents.map((component) => `
+              <button
+                type="button"
+                class="dashboard-popular-chip"
+                data-popular-component="${escapeHTML(component)}"
+              >
+                <span class="dashboard-popular-symbol">◈</span>
+                ${escapeHTML(component)}
+                <span class="dashboard-chip-arrow">↗</span>
+              </button>
+            `).join("")}
+
+          </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="dashboard-footer">
+
+          <span>
+            ROBOMIND AI
+            <span class="dashboard-footer-dot">•</span>
+            LEARN. EXPLORE. INNOVATE.
+          </span>
+
+          <a href="#dashboard">Back to top ↑</a>
+
+        </footer>
+
       </div>
-
-      <div class="dashboard-bottom-banner">
-        <div>
-          <span class="dashboard-label">YOUR ROBOTICS JOURNEY</span>
-          <h2>Learn. Explore. Innovate.</h2>
-          <p>
-            Build your robotics knowledge one component at a time.
-          </p>
-        </div>
-
-        <a href="#explore" class="dashboard-primary-button">
-          Get Started <span>→</span>
-        </a>
-      </div>
-
     </div>
+
+    <!-- MOBILE BACKDROP -->
+    <div
+      class="dashboard-sidebar-backdrop"
+      id="dashboardSidebarBackdrop"
+    ></div>
   `;
 
-  // Insert Dashboard separately from the existing Home page.
+  // Insert dashboard immediately after the existing header.
   header.after(dashboard);
 
-  // Add Dashboard immediately after Home in the navigation.
+  // Add Dashboard to the existing application navigation.
   const nav = header.querySelector("nav");
   const homeLink = nav?.querySelector('a[href="#home"]');
 
-  if (
-    nav &&
-    !nav.querySelector('a[href="#dashboard"]')
-  ) {
+  if (nav && !nav.querySelector('a[href="#dashboard"]')) {
     const dashboardLink = document.createElement("a");
 
     dashboardLink.href = "#dashboard";
@@ -448,88 +795,84 @@ function createDashboard() {
   renderDashboardStats();
   renderRecentRobots();
   renderRecentComponents();
-  updateRecentCounts();
 
-  // Set the correct page on first load.
+  bindDashboardControls();
+
+  // Open the dashboard by default when there is no existing hash.
+  if (!window.location.hash) {
+    const newUrl =
+      window.location.pathname +
+      window.location.search +
+      "#dashboard";
+
+    window.history.replaceState(null, "", newUrl);
+  }
+
   setPageFromHash();
+
+  dashboardInitialized = true;
+
+  console.info("RoboMind AI Dashboard initialized successfully.");
 }
 
-// --------------------------------------------------
-// OPEN ROBOTS AND COMPONENTS
-// --------------------------------------------------
+// ------------------------------------------------------
+// MOBILE SIDEBAR CONTROLS
+// ------------------------------------------------------
 
-function openRobot(robotName) {
-  const robotCard = [...document.querySelectorAll(".robot-card")]
-    .find((card) =>
-      card.querySelector("h3")?.textContent.trim() === robotName
-    );
+function bindDashboardControls() {
+  const toggle = document.querySelector("#dashboardMenuToggle");
+  const sidebar = document.querySelector("#dashboardSidebar");
+  const backdrop = document.querySelector("#dashboardSidebarBackdrop");
 
-  if (!robotCard) return;
+  if (!toggle || !sidebar || !backdrop) return;
 
-  // Return to Home before opening the robot.
-  if (window.location.hash !== "#explore") {
-    window.location.hash = "#explore";
-  } else {
-    setPageFromHash();
-  }
+  toggle.addEventListener("click", () => {
+    const isOpen = sidebar.classList.toggle("is-open");
 
-  robotCard.click();
-}
+    backdrop.classList.toggle("is-visible", isOpen);
 
-function openComponent(componentName) {
-  const componentButton = [...document.querySelectorAll(".component-button")]
-    .find((button) =>
-      button.dataset.component === componentName
-    );
+    toggle.setAttribute("aria-expanded", String(isOpen));
+  });
 
-  if (componentButton) {
-    if (window.location.hash !== "#explore") {
-      window.location.hash = "#explore";
-    } else {
-      setPageFromHash();
+  backdrop.addEventListener("click", closeDashboardSidebar);
+
+  sidebar.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeDashboardSidebar);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeDashboardSidebar();
     }
-
-    componentButton.click();
-    return;
-  }
-
-  const searchInput = document.querySelector("#searchInput");
-
-  if (searchInput) {
-    if (window.location.hash !== "#component-search") {
-      window.location.hash = "#component-search";
-    } else {
-      setPageFromHash();
-    }
-
-    searchInput.value = componentName;
-
-    searchInput.dispatchEvent(
-      new Event("input", { bubbles: true })
-    );
-  }
+  });
 }
 
-// --------------------------------------------------
-// CLICK EVENTS
-// --------------------------------------------------
+// ------------------------------------------------------
+// GLOBAL CLICK EVENTS
+// ------------------------------------------------------
 
 document.addEventListener("click", (event) => {
-  const robotCard = event.target.closest(".robot-card");
+  const target = event.target;
+
+  if (!(target instanceof Element)) return;
+
+  // Robot activity
+  const robotCard = target.closest(".robot-card");
 
   if (robotCard) {
-    const robotName =
-      robotCard.querySelector("h3")?.textContent.trim();
+    const robotName = robotCard.querySelector("h3")?.textContent.trim();
 
     if (robotName) {
       addRecentItem(recentRobots, robotName);
+
       renderRecentRobots();
-      updateRecentCounts();
+      renderDashboardStats();
     }
   }
 
-  const componentButton = event.target.closest(".component-button");
-  const searchCard = event.target.closest(".search-card");
+  // Component activity
+  const componentButton = target.closest(".component-button");
+  const searchCard = target.closest(".search-card");
 
   if (componentButton || searchCard) {
     const componentName = componentButton
@@ -538,56 +881,68 @@ document.addEventListener("click", (event) => {
 
     if (componentName) {
       addRecentItem(recentComponents, componentName);
+
       renderRecentComponents();
-      updateRecentCounts();
+      renderDashboardStats();
     }
   }
 
-  const recentRobotButton =
-    event.target.closest("[data-robot-name]");
+  // Recently explored robot
+  const recentRobotButton = target.closest("[data-robot-name]");
 
   if (recentRobotButton) {
     openRobot(recentRobotButton.dataset.robotName);
+    return;
   }
 
-  const recentComponentButton =
-    event.target.closest("[data-component-name]");
+  // Recently viewed component
+  const recentComponentButton = target.closest("[data-component-name]");
 
   if (recentComponentButton) {
     openComponent(recentComponentButton.dataset.componentName);
+    return;
   }
 
-  const popularButton =
-    event.target.closest("[data-popular-component]");
+  // Popular component
+  const popularButton = target.closest("[data-popular-component]");
 
   if (popularButton) {
     openComponent(popularButton.dataset.popularComponent);
   }
 });
 
-// --------------------------------------------------
-// WAIT FOR THE MAIN APPLICATION
-// --------------------------------------------------
+// ------------------------------------------------------
+// REFRESH DASHBOARD COUNTS AFTER ADMIN UPDATES
+// ------------------------------------------------------
 
-const dashboardObserver = new MutationObserver(() => {
+window.addEventListener("robomind:data-updated", () => {
+  renderDashboardStats();
+});
+
+// ------------------------------------------------------
+// INITIALIZATION
+// ------------------------------------------------------
+
+function initializeDashboard() {
+  if (dashboardInitialized) return;
+
   const app = document.querySelector("#app");
-  const header = document.querySelector(".header");
+  const header = document.querySelector("#app .header");
   const main = document.querySelector("#app main");
-  const robotCards = document.querySelectorAll(".robot-card");
-  const searchResults = document.querySelector("#searchResults");
+  const robotCards = document.querySelectorAll("#app .robot-card");
 
-  if (
-    app &&
-    header &&
-    main &&
-    robotCards.length > 0 &&
-    searchResults &&
-    !document.querySelector("#dashboard")
-  ) {
-    createDashboard();
+  if (!app || !header || !main || robotCards.length === 0) {
+    return;
   }
 
-  if (document.querySelector("#dashboard")) {
+  createDashboard();
+}
+
+// Wait until main.js creates the application.
+const dashboardObserver = new MutationObserver(() => {
+  initializeDashboard();
+
+  if (dashboardInitialized) {
     dashboardObserver.disconnect();
   }
 });
@@ -597,6 +952,5 @@ dashboardObserver.observe(document.body, {
   subtree: true
 });
 
-// Also check immediately in case the main application
-// has already rendered.
-createDashboard();
+// Also try immediately.
+initializeDashboard();
